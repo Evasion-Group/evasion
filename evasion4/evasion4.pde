@@ -1,5 +1,6 @@
 // EVASION!!!!!
 
+boolean won;
 Player me;
 Obstacle obstacle1;
 Thewall floyd; 
@@ -14,38 +15,40 @@ void setup() {
   thegoal = new Goal(width-115, height/2);
   safezone1 = new Safezone(800, 300);
   obstacle1 = new Obstacle(150, 0, width - 400, height);
+  won = false;
 }
 
 void draw() {
   background(0, 0, 0);
+  if (won == false) {
+    if (obstacle1.xLeftLimit <= (floyd.x + floyd.w)) {
+      obstacle1.shrinkArea(floyd.s);
+    }
+    obstacle1.randomMove();
+    obstacle1.display();
+    thegoal.display();
+    me.rollover(mouseX, mouseY);
+    me.drag(mouseX, mouseY);
+    boolean safe = safezonecollision();
+    me.display(safe);
+    safezone1.display(safe);
+    floyd.display();
 
-  if (obstacle1.xLeftLimit <= (floyd.x + floyd.w)) {
-    obstacle1.shrinkArea(floyd.s);
-  }
-  obstacle1.randomMove();
-  obstacle1.display();
-  thegoal.display();
-  me.rollover(mouseX, mouseY);
-  me.drag(mouseX, mouseY);
-  boolean safe = safezonecollision();
-  me.display(safe);
-  safezone1.display(safe);
-  floyd.display();
+    if (wallcollision()) {
+      setup();
+    }
 
-  if (wallcollision()) {
-    setup();
-  }
+    if (safe) {
+      print("Bang");
+    }
 
-  if (safe) {
-    print("Bang");
-  }
+    if (won()) {
+      won = true;
+    } 
 
-  if (goalcollision()) {
-    print("Bang!");
-  } 
-
-  if (obstaclecollision() && !safe) {
-    setup();
+    if (obstaclecollision() && !safe) {
+      setup();
+    }
   }
 }
 
@@ -63,13 +66,14 @@ void mousePressed() {
 void mouseReleased() {
   me.stopDragging();
 }
- 
+
 
 
 
 //***************************
 //Collision Checking*********
 //***************************
+
 
 //Wall Collision
 boolean wallcollision() {
@@ -98,7 +102,7 @@ boolean safezonecollision() {
 }
 
 //Goal Collision
-boolean goalcollision() {
+boolean won() {
   int margin = 5;
   if (abs(me.x - thegoal.x) < margin && abs(me.y - thegoal.y) < margin) {
     return true;
