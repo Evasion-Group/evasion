@@ -9,8 +9,8 @@ Goal thegoal;
 Safezone safezone1;
 
 void setup() {
-  size(1280, 736);
-//  orientation(LANDSCAPE);
+//  size(1280, 736);
+  orientation(LANDSCAPE);
   me = new Player(75, height/2);
   floyd = new Thewall(-1310, 0, 0.1);
   thegoal = new Goal(width-115, height/2);
@@ -25,6 +25,7 @@ void draw() {
   if (won == false) {
     if (obstacle1.xLeftLimit <= (floyd.x + floyd.w)) {
       obstacle1.shrinkArea(floyd.s);
+      obstacle2.shrinkArea(floyd.s);
     }
     obstacle1.randomMove();
     obstacle1.display();
@@ -43,14 +44,17 @@ void draw() {
     }
 
     if (safe) {
-      print("Bang");
+      print("BANG");
+//      if (obstacle1.xOffset - obstacle1.xScalar < safezone1.x) {
+//        obstacle1.shrinkArea(5);
+//      }
     }
 
     if (won()) {
       won = true;
     } 
 
-    if (obstaclecollision() && !safe) {
+    if ((obstaclecollision(obstacle1) || obstaclecollision(obstacle2)) && !safe) {
       setup();
     }
   } else if (me.r > thegoal.fw + 100) {
@@ -126,9 +130,9 @@ boolean won() {
 }
 
 //Obstacle Collision
-boolean obstaclecollision() {
+boolean obstaclecollision(Obstacle obs) {
   int margin = 27;
-  if (abs(me.x - obstacle1.x) < margin && abs(me.y - obstacle1.y) < margin) {
+  if (abs(me.x - obs.x) < margin && abs(me.y - obs.y) < margin) {
     return true;
   } else {
     return false;
