@@ -9,8 +9,8 @@ Goal thegoal;
 Safezone safezone1;
 
 void setup() {
-//  size(1280, 736);
-  orientation(LANDSCAPE);
+  size(1280, 736);
+//  orientation(LANDSCAPE);
   me = new Player(75, height/2);
   floyd = new Thewall(-1310, 0, 0.1);
   thegoal = new Goal(width-115, height/2);
