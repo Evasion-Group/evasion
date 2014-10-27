@@ -17,15 +17,20 @@ class Player {
     r = 27;
   }
 
-  void display(boolean safe) {
-    //basic shape of player
-    //  x = mouseX;
-    //  y = mouseY;
-    if (safe) {
-      fill(150);
-    } else {
-      fill(255);
-    }
+  //  void display(boolean safe) {
+  //    //basic shape of player
+  //    //  x = mouseX;
+  //    //  y = mouseY;
+  //    if (safe) {
+  //      fill(150);
+  //    } else {
+  //      fill(255);
+  //    }
+  //    ellipse(x, y, r*2, r*2);
+  //  }
+
+  void display() {
+    fill(255);
     ellipse(x, y, r*2, r*2);
   }
 
@@ -34,7 +39,7 @@ class Player {
   void clicked(int mx, int my) {
     if (mx > x - r && mx < x + r && my > y - r && my < y + r) {
       dragging = true;
-      // If so, keep track of relative location of click to corner of rectangle
+      // If so, keep track of relative location of click to corner of circle
       offsetX = x-mx;
       offsetY = y-my;
     }
@@ -54,11 +59,17 @@ class Player {
     dragging = false;
   }
 
-  // Drag the rectangle
-  void drag(int mx, int my) {
+  // Drag the circle
+  float drag(int mx, int my) {
+    float oldx = x;
+    float oldy = y;
     if (dragging) {
+
       x = mx + offsetX;
       y = my + offsetY;
+      return abs(oldx - x) + abs(oldy - y);
     }
+    return 0;
   }
 }
+

@@ -8,19 +8,21 @@ class Thewall {
   float w;
   float h;
 
-  Thewall(float xPos, float yPos, float speed) {
+  Thewall(float xPos, float yPos, float wallwidth, float wallheight) {
     x = xPos;
     y = yPos;
-    s = speed; 
-    w = 1300;
-    h = 800;
+    w = wallwidth;
+    h = wallheight;
   }
 
   void display() {
     // shape of the wall
-    fill(255, 255, 255);
-    x = x + s;
+    fill(192);
     rect(x, y, w, h); 
     //print(x);
+  }
+  
+  void move(float speed) {
+    y = y + speed;
   }
 }
